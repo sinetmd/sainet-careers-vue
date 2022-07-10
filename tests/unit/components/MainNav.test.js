@@ -26,40 +26,29 @@ describe("MainNav", () => {
 
   describe("when user is logged out", () => {
     it("prompts user to sign in", () => {
-      const wrapper = mount(MainNav, {
-        data() {
-          return {
-            isLoggedIn: false,
-          };
-        },
-      });
+      const wrapper = mount(MainNav);
 
       // Find components in our app to be tested
       const logginButton = wrapper.find("[data-test='login-button']");
-      const profileImage = wrapper.find("[data-test='profile-image'");
       expect(logginButton.exists()).toBe(true);
-      expect(profileImage.exists()).toBe(false);
     });
   });
 
-  describe("", () => {
-    it("displays user profile picture", () => {
-      const wrapper = mount(MainNav, {
-        data() {
-          return {
-            isLoggedIn: true,
-          };
-        },
-      });
+  describe("when user logs in", () => {
+    it("displays user profile picture", async () => {
+      const wrapper = mount(MainNav);
 
       // Find components in our app to be tested
       // const logginButton = wrapper.findComponent({ name: "ActionButton" });
       // const profileImage = wrapper.findComponent({ name: "ProfileImage" });
       // This solution is better because we are not so tight copupled with the html
-      const logginButton = wrapper.find("[data-test='login-button']");
       const profileImage = wrapper.find("[data-test='profile-image'");
-      expect(logginButton.exists()).toBe(false);
-      expect(profileImage.exists()).toBe(true);
+      expect(profileImage.exists()).toBe(false);
+
+      const logginButton = wrapper.find("[data-test='login-button']");
+
+      // await logginButton.trigger("click");
+      // expect(profileImage.exists()).toBe(true);
     });
   });
 });

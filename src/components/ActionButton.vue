@@ -1,13 +1,48 @@
 <template>
-  <button
-    class="px-5 py-3 font-medium text-white border-0 rounded bg-brand-blue-1 hover:shadow-blue"
-  >
-    Sign in
+  <!-- apply primary css style to our button -->
+  <button :class="buttonClass">
+    {{ text }}
   </button>
 </template>
 
 <script>
 export default {
   name: "ActionButton",
+  props: {
+    text: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: false,
+      default: "primary",
+      validator(value) {
+        return ["primary", "secondary"].includes(value);
+      },
+    },
+  },
+  computed: {
+    buttonClass() {
+      return {
+        [this.type]: true, // we use key-value pair: primary: true or secondary:true
+      };
+    },
+  },
 };
 </script>
+
+<!-- scoped is used to specify that only on this component will be applied -->
+<style scoped>
+button {
+  @apply px-5 py-3 font-medium rounded;
+}
+
+.primary {
+  @apply text-white bg-brand-blue-1 hover:shadow-blue;
+}
+
+.secondary {
+  @apply text-brand-blue-1 bg-transparent hover:bg-brand-blue-2 hover:text-white;
+}
+</style>

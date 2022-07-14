@@ -1,15 +1,15 @@
-import { mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 
 import MainNav from "@/components/MainNav.vue";
 
 describe("MainNav", () => {
   it("displays company name", () => {
-    const wrapper = mount(MainNav);
+    const wrapper = shallowMount(MainNav);
     expect(wrapper.text()).toMatch("Sainet Careers");
   });
 
   it("displays menu items for navigation", () => {
-    const wrapper = mount(MainNav);
+    const wrapper = shallowMount(MainNav);
     const navigationMenuItem = wrapper.findAll(
       "[data-test='main-nav-list-item']"
     );
@@ -26,7 +26,7 @@ describe("MainNav", () => {
 
   describe("when user is logged out", () => {
     it("prompts user to sign in", () => {
-      const wrapper = mount(MainNav);
+      const wrapper = shallowMount(MainNav);
 
       // Find components in our app to be tested
       const logginButton = wrapper.find("[data-test='login-button']");
@@ -36,19 +36,33 @@ describe("MainNav", () => {
 
   describe("when user logs in", () => {
     it("displays user profile picture", async () => {
-      const wrapper = mount(MainNav);
+      const wrapper = shallowMount(MainNav);
 
       // Find components in our app to be tested
       // const logginButton = wrapper.findComponent({ name: "ActionButton" });
       // const profileImage = wrapper.findComponent({ name: "ProfileImage" });
       // This solution is better because we are not so tight copupled with the html
-      const profileImage = wrapper.find("[data-test='profile-image'");
+      let profileImage = wrapper.find("[data-test='profile-image'");
       expect(profileImage.exists()).toBe(false);
 
       const logginButton = wrapper.find("[data-test='login-button']");
+      await logginButton.trigger("click");
 
-      // await logginButton.trigger("click");
-      // expect(profileImage.exists()).toBe(true);
+      profileImage = wrapper.find("[data-test='profile-image']");
+      expect(profileImage.exists()).toBe(true);
+    });
+
+    it("displays subnavigation with additional information", async () => {
+      const wrapper = shallowMount(MainNav);
+
+      let subnav = wrapper.find("[data-test='subnav']");
+      expect(subnav.exists()).toBe(false);
+
+      const logginButton = wrapper.find("[data-test='login-button']");
+      await logginButton.trigger("click");
+
+      subnav = wrapper.find("[data-test='subnav']");
+      expect(subnav.exists()).toBe(true);
     });
   });
 });

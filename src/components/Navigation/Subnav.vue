@@ -3,7 +3,9 @@
     <div class="flex items-center h-full px-8">
       <div v-if="onJobResultPage" data-test="job-count">
         <font-awesome-icon :icon="['fas', 'search']" class="mr-3" />
-        <span> <span class="text-brand-green-1">1634</span> jobs matched</span>
+        <span class="font-semibold">
+          <span class="text-brand-green-1">1634</span> jobs matched</span
+        >
       </div>
     </div>
   </div>
@@ -12,10 +14,10 @@
 <script>
 export default {
   name: "Subnav",
-  data() {
-    return {
-      onJobResultPage: true,
-    };
+  computed: {
+    onJobResultPage() {
+      return this.$route.name === "JobResults";
+    },
   },
 };
 </script>

@@ -1,15 +1,23 @@
-import { shallowMount } from "@vue/test-utils";
+import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 
 import MainNav from "@/components/Navigation/MainNav.vue";
 
 describe("MainNav", () => {
+  const createConfig = () => ({
+    global: {
+      stubs: {
+        "router-link": RouterLinkStub,
+      },
+    },
+  });
+
   it("displays company name", () => {
-    const wrapper = shallowMount(MainNav);
+    const wrapper = shallowMount(MainNav, createConfig());
     expect(wrapper.text()).toMatch("Sainet Careers");
   });
 
   it("displays menu items for navigation", () => {
-    const wrapper = shallowMount(MainNav);
+    const wrapper = shallowMount(MainNav, createConfig());
     const navigationMenuItem = wrapper.findAll(
       "[data-test='main-nav-list-item']"
     );
@@ -26,8 +34,7 @@ describe("MainNav", () => {
 
   describe("when user is logged out", () => {
     it("prompts user to sign in", () => {
-      const wrapper = shallowMount(MainNav);
-
+      const wrapper = shallowMount(MainNav, createConfig());
       // Find components in our app to be tested
       const logginButton = wrapper.find("[data-test='login-button']");
       expect(logginButton.exists()).toBe(true);
@@ -36,8 +43,7 @@ describe("MainNav", () => {
 
   describe("when user logs in", () => {
     it("displays user profile picture", async () => {
-      const wrapper = shallowMount(MainNav);
-
+      const wrapper = shallowMount(MainNav, createConfig());
       // Find components in our app to be tested
       // const logginButton = wrapper.findComponent({ name: "ActionButton" });
       // const profileImage = wrapper.findComponent({ name: "ProfileImage" });
@@ -53,7 +59,7 @@ describe("MainNav", () => {
     });
 
     it("displays subnavigation with additional information", async () => {
-      const wrapper = shallowMount(MainNav);
+      const wrapper = shallowMount(MainNav, createConfig());
 
       let subnav = wrapper.find("[data-test='subnav']");
       expect(subnav.exists()).toBe(false);
